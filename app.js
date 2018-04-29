@@ -27,15 +27,37 @@ var mysql = require('mysql');
 //   database : 'user_management'      
 // });
 
-var connection = mysql.createConnection({
+
+var db_config = {
   insecureAuth : true,
   host     : 'us-cdbr-iron-east-05.cleardb.net',
   user     : 'b14181c70f2106',
   password : '6a5000bd',
-  database : 'heroku_41ca7e2161854d5'      
-});
-    
-connection.connect();    
+  database : 'heroku_41ca7e2161854d5' 
+};
+
+var connection;
+
+function handleDisconnect() {
+  connection = mysql.createConnection(db_config); 
+
+  connection.connect(function(err) { 
+    if(err) {
+      console.log('error when connecting to db:', err);
+      setTimeout(handleDisconnect, 2000); 
+    } 
+  });
+  connection.on('error', function(err) {
+    console.log('db error', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') {
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  });
+}
+
+handleDisconnect();
 
 app.get('/user/list', (req, res) =>{    
     connection.query('SELECT * FROM Users', function (err, rows, fields) {
