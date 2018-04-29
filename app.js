@@ -19,12 +19,20 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 
 var mysql = require('mysql');
+// var connection = mysql.createConnection({
+//     insecureAuth : true,
+//   host     : 'localhost',
+//   user     : 'root',
+//   password : 'root',
+//   database : 'user_management'      
+// });
+
 var connection = mysql.createConnection({
-    insecureAuth : true,
-  host     : 'localhost',
-  user     : 'root',
-  password : 'root',
-  database : 'user_management'      
+  insecureAuth : true,
+  host     : 'us-cdbr-iron-east-05.cleardb.net',
+  user     : 'b14181c70f2106',
+  password : '6a5000bd',
+  database : 'heroku_41ca7e2161854d5'      
 });
     
 connection.connect();    
